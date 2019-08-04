@@ -39,6 +39,7 @@ Upload the `steamauth` folder.
 Open up `SteamConfig.php` 
 - change `domainname` to your domain name.
 - change `apikey` to your API-Key from http://steamcommunity.com/dev/apikey
+- change `curlenabled` to enable/disable curl system (This is only if your Hosting Provider don't have allow_url_fopen enabled or https:// and http:// wrappers).
 
 
 Now in the page that you would like to use the steamauth library, add the following at the top:
