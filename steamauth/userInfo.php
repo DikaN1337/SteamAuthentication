@@ -1,7 +1,27 @@
 <?php
+
+function file_get_contents_curl($url) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);       
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
+}
+
 if (empty($_SESSION['steam_uptodate']) or empty($_SESSION['steam_personaname'])) {
 	require 'SteamConfig.php';
-	$url = file_get_contents("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".$steamauth['apikey']."&steamids=".$_SESSION['steamid']); 
+	if ($steamauth['curlenabled'] = true) {
+		$url = file_get_contents("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".$steamauth['apikey']."&steamids=".$_SESSION['steamid']); 
+	} else {
+		$url = file_get_contents_curl("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".$steamauth['apikey']."&steamids=".$_SESSION['steamid']); 
+	}
 	$content = json_decode($url, true);
 	$_SESSION['steam_steamid'] = $content['response']['players'][0]['steamid'];
 	$_SESSION['steam_communityvisibilitystate'] = $content['response']['players'][0]['communityvisibilitystate'];
