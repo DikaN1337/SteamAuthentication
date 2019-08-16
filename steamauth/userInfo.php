@@ -18,9 +18,9 @@ function file_get_contents_curl($url) {
 if (empty($_SESSION['steam_uptodate']) or empty($_SESSION['steam_personaname'])) {
 	require 'SteamConfig.php';
 	if ($steamauth['curlenabled'] = true) {
-		$url = file_get_contents("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".$steamauth['apikey']."&steamids=".$_SESSION['steamid']); 
-	} else {
 		$url = file_get_contents_curl("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".$steamauth['apikey']."&steamids=".$_SESSION['steamid']); 
+	} else {
+		$url = file_get_contents("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".$steamauth['apikey']."&steamids=".$_SESSION['steamid']); 
 	}
 	$content = json_decode($url, true);
 	$_SESSION['steam_steamid'] = $content['response']['players'][0]['steamid'];
